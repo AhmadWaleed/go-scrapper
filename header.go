@@ -42,6 +42,11 @@ func (w *Web) ContentType() []string {
 	for _, a := range n.Attr {
 		types = append(types, a.Val)
 	}
+
+	if len(types) == 1 {
+		return types[:0]
+	}
+
 	return types
 }
 

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"log"
 	"net/http"
 )
 
@@ -10,6 +11,11 @@ func NewScrapper(url string) *Web {
 	web := Web{}
 	web.URL = url
 	web.HeadingOption = DefaultHeadingOption()
+
+	if err := web.Fetch(); err != nil {
+		log.Fatal(err)
+	}
+
 	return &web
 }
 
@@ -19,10 +25,10 @@ type Web struct {
 	HeadingOption HeadingOption
 }
 
-func (w *Web) Fetch(url string) error {
-	res, err := http.Get(url)
+func (w *Web) Fetch() error {
+	res, err := http.Get(w.URL)
 	if err != nil {
-		return fmt.Errorf("could not get %w: %v", url, err)
+		return fmt.Errorf("could not get %w: %v", w.URL, err)
 	}
 
 	defer res.Body.Close()
