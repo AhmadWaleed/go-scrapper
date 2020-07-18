@@ -28,7 +28,7 @@ type Web struct {
 func (w *Web) Fetch() error {
 	res, err := http.Get(w.URL)
 	if err != nil {
-		return fmt.Errorf("could not get %w: %v", w.URL, err)
+		return fmt.Errorf("could not get %s: %v", w.URL, err)
 	}
 
 	defer res.Body.Close()
