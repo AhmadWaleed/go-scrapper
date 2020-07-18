@@ -15,5 +15,5 @@ fmt.Println(web.Title())
 
 // <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 // return ["text/html utf-8]"
-fmt.Println(web.Headers())
+fmt.Println(web.ContentType())
 ```
