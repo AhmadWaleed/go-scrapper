@@ -246,3 +246,84 @@ func TestViewport(t *testing.T) {
 		})
 	}
 }
+
+func TestContentType(t *testing.T) {
+	tt := []struct {
+		name        string
+		html        string
+		contentType string
+	}{
+		{
+			name: "with content type",
+			html: `
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	</head>
+	<body>
+	</body>
+</html>`,
+			contentType: "text/html, utf-8",
+		},
+		{
+			name: "no content type",
+			html: `
+<html>
+	<head>
+	</head>
+	<body>
+	</body>
+</html>`,
+			contentType: "",
+		},
+	}
+
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			doc, err := goquery.NewDocumentFromReader(strings.NewReader(tc.html))
+			if err != nil {
+				t.Fatalf("could not create doc reader %v", err)
+			}
+
+			web := Web{Doc: doc}
+			if contentType := web.ContentType(); contentType != tc.contentType {
+				t.Errorf("content-type should be %v got %v", tc.contentType, contentType)
+			}
+		})
+	}
+}
+
+func TestHeaders(t *testing.T) {
+	html := `
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="csrf-token" content="token" />
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<link rel="canonical" href="https://test-pages.goscrapper.de/page.html" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	</head>
+	<body>
+	</body>
+</html>`
+
+	exp := map[string]string{
+		"charset":     "utf-8",
+		"canonical":   "https://test-pages.goscrapper.de/page.html",
+		"contentType": "text/html, utf-8",
+		"csrfToken":   "token",
+		"viewport":    "width=device-width, initial-scale=1",
+	}
+
+	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
+	if err != nil {
+		t.Fatalf("could not create doc reader %v", err)
+	}
+
+	web := Web{Doc: doc}
+	got := web.Headers()
+
+	if eq := reflect.DeepEqual(exp, got); !eq {
+		t.Errorf("headers should be %v, got %v", exp, got)
+	}
+}

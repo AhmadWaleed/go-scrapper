@@ -33,18 +33,28 @@ func (w *Web) Viewport() *Viewport {
 	return NewViewport(w.Doc)
 }
 
-// Fetch content type meta info from head, slice will be returned
+// Fetch content type meta info from head
 //
 // <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 // w.ContentType() -> [text/html, utf-8]
-func (w *Web) ContentType() []string {
-	var types []string
-	n := w.Doc.Find("meta[http-equiv='Content-type']").Get(0)
-	for _, a := range n.Attr {
-		types = append(types, a.Val)
+func (w *Web) ContentType() string {
+	var values []string
+	content, ok := w.Doc.Find("meta[http-equiv='Content-type']").Attr("content")
+	if !ok {
+		return ""
 	}
 
-	return types
+	items := strings.Split(content, " ")
+	for _, v := range items {
+		if strings.Contains(v, "=") {
+			kv := strings.Split(v, "=")
+			values = append(values, strings.TrimSpace(strings.TrimRight(kv[1], ";")))
+			continue
+		}
+		values = append(values, strings.TrimSpace(strings.TrimRight(v, ";")))
+	}
+
+	return strings.Join(values, ", ")
 }
 
 // Fetch canonical meta url from head
@@ -55,7 +65,6 @@ func (w *Web) Canonical() string {
 	return w.Doc.Find("link[rel='canonical']").AttrOr("href", "")
 }
 
-
 // Fetch meta info of csrf token from head
 //
 // <meta name="csrf-token" content="token" />
@@ -65,12 +74,13 @@ func (w *Web) CSRFToken() string {
 }
 
 // get the header collected as an slice
-func (w *Web) Headers() map[string]interface{} {
-	headers := make(map[string]interface{}, 4)
+func (w *Web) Headers() map[string]string {
+	headers := make(map[string]string, 4)
 	headers["charset"] = w.Charset()
+	headers["canonical"] = w.Canonical()
 	headers["contentType"] = w.ContentType()
 	headers["csrfToken"] = w.CSRFToken()
-	headers["viewport"] = w.Viewport().Val
+	headers["viewport"] = w.Viewport().String()
 	return headers
 }
 

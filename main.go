@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 	//url := "https://google.com";
-	url := "https://www.metalsucks.net/";
+	url := "https://www.metalsucks.net/"
 
 	web := NewScrapper(url)
 

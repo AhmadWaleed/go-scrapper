@@ -33,9 +33,9 @@ func (w *Web) Heading(opt ...HeadingLevel) []string {
 		levels = append(levels, H1)
 	}
 
-	var headings []string
+	headings := make([]string, 0)
 	for _, lvl := range levels {
-		w.Doc.Find(string(lvl)).Next().Each(func(i int, heading *goquery.Selection) {
+		w.Doc.Find(string(lvl)).Each(func(i int, heading *goquery.Selection) {
 			headings = append(headings, heading.Text())
 		})
 	}
