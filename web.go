@@ -10,7 +10,6 @@ import (
 func NewScrapper(url string) *Web {
 	web := Web{}
 	web.URL = url
-	web.HeadingOption = DefaultHeadingOption()
 
 	if err := web.Fetch(); err != nil {
 		log.Fatal(err)
@@ -20,9 +19,9 @@ func NewScrapper(url string) *Web {
 }
 
 type Web struct {
-	URL           string
-	Doc           *goquery.Document
-	HeadingOption HeadingOption
+	URL          string
+	Doc          *goquery.Document
+	HeadingLevel HeadingLevel
 }
 
 func (w *Web) Fetch() error {
@@ -38,7 +37,7 @@ func (w *Web) Fetch() error {
 			return fmt.Errorf("you are being rate limited")
 		}
 
-		return fmt.Errorf("bad response from server: %w", res.Status)
+		return fmt.Errorf("bad response from server: %s", res.Status)
 	}
 
 	w.Doc, err = goquery.NewDocumentFromReader(res.Body)

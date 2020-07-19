@@ -1,25 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 )
 
 // Levels: h1, h2, h3, h4, h5, h6
-type HeadingOption struct {
-	Level string
-}
+type HeadingLevel string
 
-func DefaultHeadingOption() HeadingOption {
-	return HeadingOption{Level: "h1"}
-}
+const (
+	H1 HeadingLevel = "h1"
+	H2 HeadingLevel = "h2"
+	H3 HeadingLevel = "h3"
+	H4 HeadingLevel = "h4"
+	H5 HeadingLevel = "h5"
+	H6 HeadingLevel = "h6"
+)
 
-func (w *Web) WithHeadingOption(opt HeadingOption) *Web {
-	w.HeadingOption = opt
+func (w *Web) WithHeadingOption(lvl HeadingLevel) *Web {
+	w.HeadingLevel = lvl
 	return w
-}
-
-func NewHeadingOption(level string) HeadingOption {
-	return HeadingOption{Level: level}
 }
 
 // Fetch slice of heading text, default level is h1
@@ -27,11 +27,20 @@ func NewHeadingOption(level string) HeadingOption {
 //
 // <h1>Heading 1</h1>
 // w.Heading()[0] -> Heading 1
-func (w *Web) Heading() []string {
+func (w *Web) Heading(opt ...HeadingLevel) []string {
+	var levels []HeadingLevel
+	levels = append(levels, opt...)
+	if len(levels) == 0 {
+		// set default level if not provided any
+		levels = append(levels, H1)
+	}
+	fmt.Println(levels)
 	var headings []string
-	w.Doc.Find(w.HeadingOption.Level).Next().Each(func(i int, heading *goquery.Selection) {
-		headings = append(headings, heading.Text())
-	})
+	for _, lvl := range levels {
+		w.Doc.Find(string(lvl)).Next().Each(func(i int, heading *goquery.Selection) {
+			headings = append(headings, heading.Text())
+		})
+	}
 	return headings
 }
 
@@ -42,14 +51,7 @@ func (w *Web) Heading() []string {
 // <h3>Heading 3</h3>
 // w.Headings() -> [[Heading 1, Heading 2, Heading]]
 func (w *Web) Headings() [][]string {
-	opts := []HeadingOption{
-		NewHeadingOption("h1"),
-		NewHeadingOption("h2"),
-		NewHeadingOption("h3"),
-		NewHeadingOption("h4"),
-		NewHeadingOption("h5"),
-		NewHeadingOption("h6"),
-	}
+	opts := []HeadingLevel{H1, H2, H3, H4, H5, H6}
 
 	var headings [][]string
 	for _, opt := range opts {
