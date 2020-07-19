@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 )
@@ -51,7 +52,7 @@ func (w *Web) ContentType() []string {
 // <link rel="canonical" href="https://test-pages.goscrapper.de/page.html" />
 // w.Canonical() -> https://test-pages.goscrapper.de/page.html
 func (w *Web) Canonical() string {
-	return w.Doc.Find("link[rel='canonical']").AttrOr("content", "")
+	return w.Doc.Find("link[rel='canonical']").AttrOr("href", "")
 }
 
 
@@ -74,7 +75,7 @@ func (w *Web) Headers() map[string]interface{} {
 }
 
 type Viewport struct {
-	Val []string
+	Val map[string]string
 }
 
 func NewViewport(doc *goquery.Document) *Viewport {
@@ -84,13 +85,15 @@ func NewViewport(doc *goquery.Document) *Viewport {
 }
 
 func (v *Viewport) Fetch(doc *goquery.Document) {
-	n := doc.Find("meta[name='viewport']").Get(0)
-	for _, a := range n.Attr{
-		if a.Val == "viewport" {
-			continue
+	vp := make(map[string]string)
+	values, ok := doc.Find("meta[name='viewport']").Attr("content")
+	if ok {
+		for _, item := range strings.Split(values, ",") {
+			kv := strings.Split(item, "=")
+			vp[strings.TrimSpace(kv[0])] = strings.TrimSpace(kv[1])
 		}
-		v.Val = append(v.Val, a.Val)
 	}
+	v.Val = vp
 }
 
 // String representation of viewport
@@ -98,5 +101,10 @@ func (v *Viewport) String() string {
 	if len(v.Val) == 0 {
 		return ""
 	}
-	return strings.Join(v.Val, ", ")
+
+	var vp []string
+	for k, v := range v.Val {
+		vp = append(vp, fmt.Sprintf("%s=%s", k, v))
+	}
+	return strings.Join(vp, ", ")
 }

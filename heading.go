@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 )
 
-// Levels: h1, h2, h3, h4, h5, h6
 type HeadingLevel string
 
 const (
@@ -34,13 +32,14 @@ func (w *Web) Heading(opt ...HeadingLevel) []string {
 		// set default level if not provided any
 		levels = append(levels, H1)
 	}
-	fmt.Println(levels)
+
 	var headings []string
 	for _, lvl := range levels {
 		w.Doc.Find(string(lvl)).Next().Each(func(i int, heading *goquery.Selection) {
 			headings = append(headings, heading.Text())
 		})
 	}
+
 	return headings
 }
 

@@ -8,5 +8,5 @@ func main() {
 
 	web := NewScrapper(url)
 
-	fmt.Println(web.ImagesWithDetails()[0])
+	fmt.Println(web.Images()[0])
 }
