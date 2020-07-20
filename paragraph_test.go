@@ -8,9 +8,9 @@ import (
 )
 
 func TestParagraphs(t *testing.T) {
-	tt := []struct{
-		name string
-		html string
+	tt := []struct {
+		name      string
+		html      string
 		paragraph []string
 	}{
 		{
@@ -23,7 +23,7 @@ func TestParagraphs(t *testing.T) {
 		<p>The quick brown fox jumps over the lazy dog.</p>
 	</body>
 </html>`,
-			paragraph:  []string{"The quick brown fox jumps over the lazy dog."},
+			paragraph: []string{"The quick brown fox jumps over the lazy dog."},
 		},
 		{
 			name: "fetches multiple paragraph",
@@ -36,7 +36,7 @@ func TestParagraphs(t *testing.T) {
 		<p>Nymphs blitz quick vex dwarf jog.</p>
 	</body>
 </html>`,
-			paragraph:  []string{
+			paragraph: []string{
 				"The quick brown fox jumps over the lazy dog.",
 				"Nymphs blitz quick vex dwarf jog.",
 			},
@@ -50,7 +50,7 @@ func TestParagraphs(t *testing.T) {
 	<body>
 	</body>
 </html>`,
-			paragraph:  make([]string, 0),
+			paragraph: make([]string, 0),
 		},
 	}
 
