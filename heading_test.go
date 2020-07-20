@@ -12,7 +12,7 @@ func TestHeading(t *testing.T) {
 		name    string
 		levels  []HeadingLevel
 		html    string
-		heading []string
+		heading [][]string
 	}{
 		{
 			name: "fetches single h1 default heading",
@@ -24,7 +24,7 @@ func TestHeading(t *testing.T) {
 		<h1>heading 1</h1>
 	</body>
 </html>`,
-			heading: []string{"heading 1"},
+			heading: [][]string{{"heading 1"}},
 		},
 		{
 			name: "fetches multiple h1 headings",
@@ -37,7 +37,7 @@ func TestHeading(t *testing.T) {
 		<h1>heading 2</h1>
 	</body>
 </html>`,
-			heading: []string{"heading 1", "heading 2"},
+			heading: [][]string{{"heading 1", "heading 2"}},
 		},
 		{
 			name:   "fetches only given heading levels",
@@ -51,7 +51,7 @@ func TestHeading(t *testing.T) {
 		<h2>heading h2</h2>
 	</body>
 </html>`,
-			heading: []string{"heading h2"},
+			heading: [][]string{{"heading h2"}},
 		},
 		{
 			name:   "fetches multiple given heading levels",
@@ -66,7 +66,7 @@ func TestHeading(t *testing.T) {
 		<h3>heading h3</h3>
 	</body>
 </html>`,
-			heading: []string{"heading h2", "heading h3"},
+			heading: [][]string{{"heading h2"}, {"heading h3"}},
 		},
 		{
 			name: "no heading",
@@ -77,7 +77,7 @@ func TestHeading(t *testing.T) {
 	<body>]
 	</body>
 </html>`,
-			heading: make([]string, 0),
+			heading: make([][]string, 0),
 		},
 	}
 
@@ -97,7 +97,6 @@ func TestHeading(t *testing.T) {
 	}
 }
 
-// @todo: fix me
 func TestHeadings(t *testing.T) {
 	html := `
 <html>
@@ -114,12 +113,12 @@ func TestHeadings(t *testing.T) {
 </html>`
 
 	expected := [][]string{
-		[]string{"heading 1"},
-		[]string{"heading 2"},
-		[]string{"heading 3"},
-		[]string{"heading 4"},
-		[]string{"heading 5"},
-		[]string{"heading 6"},
+		{"heading 1"},
+		{"heading 2"},
+		{"heading 3"},
+		{"heading 4"},
+		{"heading 5"},
+		{"heading 6"},
 	}
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))

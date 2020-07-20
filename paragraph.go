@@ -4,8 +4,8 @@ import "github.com/PuerkitoBio/goquery"
 
 // Fetch all the paragraphs (<p>) on a website
 func (w *Web) Paragraphs() []string {
-	var paragraphs []string
-	w.Doc.Find("p").Next().Each(func(i int, p *goquery.Selection) {
+	paragraphs := make([]string, 0)
+	w.Doc.Find("p").Each(func(i int, p *goquery.Selection) {
 		paragraphs = append(paragraphs, p.Text())
 	})
 	return paragraphs
