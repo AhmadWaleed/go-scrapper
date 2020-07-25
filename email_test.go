@@ -66,7 +66,7 @@ func TestEmails(t *testing.T) {
 			}
 
 			web := Web{Doc: doc}
-			emails, err := web.emails()
+			emails, err := web.Emails()
 			if err != nil {
 				t.Fatalf("could not fetch emails %v", err)
 			}

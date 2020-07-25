@@ -24,8 +24,10 @@ func (w *Web) Links() []string {
 //
 // Example:
 //
-// html: `<a href="https://placekitten.com/432/287" rel="nofollow">external kitten</a>`
-// Result: [
+// html: <a href="https://placekitten.com/432/287" rel="nofollow">external kitten</a>
+//
+// Result:
+// [
 //     'url' => 'https://placekitten.com/432/287',
 //     'text' => 'external kitten',
 //     'title' => null,

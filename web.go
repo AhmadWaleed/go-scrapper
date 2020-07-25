@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// initialize new scrapper instance
 func NewScrapper(url string) *Web {
 	web := Web{}
 	web.URL = url
@@ -19,9 +20,8 @@ func NewScrapper(url string) *Web {
 }
 
 type Web struct {
-	URL          string
-	Doc          *goquery.Document
-	HeadingLevel HeadingLevel
+	URL string
+	Doc *goquery.Document
 }
 
 func (w *Web) Fetch() error {

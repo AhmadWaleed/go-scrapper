@@ -8,8 +8,9 @@ import (
 //
 // Example:
 //
-// html :`<img src="https://test-pages.phpscraper.de/assets/cat.jpg" alt="absolute path">`
-// Result: ['https://test-pages.phpscraper.de/assets/cat.jpg',]
+// html: <img src="https://test-pages.de/assets/cat.jpg" alt="absolute path">
+//
+// Result: ['https://test-pages.de/assets/cat.jpg']
 func (w *Web) Images() []string {
 	var images []string
 	w.Doc.Find("img").Each(func(i int, img *goquery.Selection) {
@@ -26,9 +27,10 @@ func (w *Web) Images() []string {
 //
 // Example:
 //
-// html: `<img src="https://test-pages.phpscraper.de/assets/cat.jpg" alt="absolute path">`
+// html: <img src="https://test-pages.de/assets/cat.jpg" alt="absolute path">
+//
 // Result: [
-//    'url' => 'https://test-pages.phpscraper.de/assets/cat.jpg',
+//    'url' => 'https://test-pages.de/assets/cat.jpg',
 //    'alt' => 'absolute path',
 //    'width' => null,
 //    'height' => null,

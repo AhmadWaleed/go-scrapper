@@ -16,11 +16,12 @@ const (
 )
 
 // Fetch slice of heading text, default level is h1
-// you pass different heading level -> NewHeadingOption("h2")
+// you pass different heading level -> w.Heading(H2, H3)
 //
 // Example:
 //
-// html: `<h1>Heading 1</h1>`
+// html: <h1>Heading 1</h1>
+//
 // Result: Heading 1
 func (w *Web) Heading(opt ...HeadingLevel) [][]string {
 	var levels []HeadingLevel
@@ -49,10 +50,11 @@ func (w *Web) Heading(opt ...HeadingLevel) [][]string {
 //
 // Example:
 //
-// html: `<h1>Heading 1</h1>
+// html: <h1>Heading 1</h1>
 //		  <h1>Heading 1</h1>
 // 		  <h2>Heading 2</h2>
-//		  <h2>Heading 2</h2>`
+//		  <h2>Heading 2</h2>
+//
 // Result: [[Heading 1, heading 1], [Heading 2, Heading 2]]
 func (w *Web) Headings() [][]string {
 	opts := []HeadingLevel{H1, H2, H3, H4, H5, H6}

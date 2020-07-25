@@ -11,12 +11,7 @@ import (
 var reg = regexp.MustCompile(`([a-zA-Z0-9._-]+@([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+)`)
 
 // scrape all emails from current web page
-//
-// Examples:
-//
-// html: `<p>john@doe.com</p> <a href="mailto:jane@example.com,"></a>`
-// Result: [john@doe.com, jane@example.com]
-func (w *Web) emails() ([]string, error) {
+func (w *Web) Emails() ([]string, error) {
 	body, err := w.Doc.Html()
 	if err != nil {
 		return nil, fmt.Errorf("could not get body (html) %v", err)

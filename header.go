@@ -11,7 +11,8 @@ import (
 //
 // Example:
 //
-// html: `<title>Lorem Ipsum</title>`
+// html: <title>Lorem Ipsum</title>
+//
 // Result: Lorem Ipsum
 func (w *Web) Title() string {
 	return strings.TrimSpace(w.Doc.Find("title").Text())
@@ -22,7 +23,7 @@ func (w *Web) Title() string {
 //
 // Example:
 //
-// html: `<meta charset="utf-8" />`
+// html: <meta charset="utf-8" />
 // Result: utf-8
 func (w *Web) Charset() string {
 	return w.Doc.Find("meta").AttrOr("charset", "")
@@ -32,7 +33,9 @@ func (w *Web) Charset() string {
 //
 // Examples:
 //
-// html: `<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />`
+// html: <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+//
+// Results:
 // w.Viewport().Val -> ['width=device-width', 'initial-scale=1', 'maximum-scale=1', 'user-scalable=no']
 // w.Viewport().String() -> 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
 func (w *Web) Viewport() *Viewport {
@@ -44,7 +47,8 @@ func (w *Web) Viewport() *Viewport {
 // Example:
 //
 // <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-// w.ContentType() -> [text/html, utf-8]
+//
+// Result: [text/html, utf-8]
 func (w *Web) ContentType() string {
 	var values []string
 	content, ok := w.Doc.Find("meta[http-equiv='Content-type']").Attr("content")
@@ -69,8 +73,9 @@ func (w *Web) ContentType() string {
 //
 // Example:
 //
-// html: `<link rel="canonical" href="https://test-pages.goscrapper.de/page.html" />`
-// Result: https://test-pages.goscrapper.de/page.html
+// html: <link rel="canonical" href="https://test-page.goscrapper.com/page.html" />
+//
+// Result: https://test-page.goscrapper.com/page.html
 func (w *Web) Canonical() string {
 	return w.Doc.Find("link[rel='canonical']").AttrOr("href", "")
 }
@@ -79,7 +84,8 @@ func (w *Web) Canonical() string {
 //
 // Example:
 //
-// html: `<meta name="csrf-token" content="token" />`
+// html: <meta name="csrf-token" content="token" />
+//
 // Result: token
 func (w *Web) CSRFToken() string {
 	return w.Doc.Find("meta[name='csrf-token']").AttrOr("content", "")
