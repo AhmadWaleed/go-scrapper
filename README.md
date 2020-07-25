@@ -39,3 +39,5 @@ for _, q := range quotes {
     fmt.Printf("Attributes: %v, Value: %v\n", q.Attr, q.Text)
 }
 ```
+
+See the [full documentation]() for more information and examples.
