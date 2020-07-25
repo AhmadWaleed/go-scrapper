@@ -1,9 +1,15 @@
-package main
+package goscrapper
 
 import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+// get slice of all images on the page with absolute URLs
+//
+// Example:
+//
+// html :`<img src="https://test-pages.phpscraper.de/assets/cat.jpg" alt="absolute path">`
+// Result: ['https://test-pages.phpscraper.de/assets/cat.jpg',]
 func (w *Web) Images() []string {
 	var images []string
 	w.Doc.Find("img").Each(func(i int, img *goquery.Selection) {
@@ -16,6 +22,17 @@ func (w *Web) Images() []string {
 	return images
 }
 
+// get all images on the page with commonly interesting details
+//
+// Example:
+//
+// html: `<img src="https://test-pages.phpscraper.de/assets/cat.jpg" alt="absolute path">`
+// Result: [
+//    'url' => 'https://test-pages.phpscraper.de/assets/cat.jpg',
+//    'alt' => 'absolute path',
+//    'width' => null,
+//    'height' => null,
+// ]
 func (w *Web) ImagesWithDetails() []map[string]interface{} {
 	var images []map[string]interface{}
 

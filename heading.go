@@ -1,4 +1,4 @@
-package main
+package goscrapper
 
 import (
 	"github.com/PuerkitoBio/goquery"
@@ -18,8 +18,10 @@ const (
 // Fetch slice of heading text, default level is h1
 // you pass different heading level -> NewHeadingOption("h2")
 //
-// <h1>Heading 1</h1>
-// w.Heading()[0] -> Heading 1
+// Example:
+//
+// html: `<h1>Heading 1</h1>`
+// Result: Heading 1
 func (w *Web) Heading(opt ...HeadingLevel) [][]string {
 	var levels []HeadingLevel
 	levels = append(levels, opt...)
@@ -45,11 +47,13 @@ func (w *Web) Heading(opt ...HeadingLevel) [][]string {
 
 // Fetch slice of all the heading tags text (h1, h2, h3, h4, h5, h6)
 //
-// <h1>Heading 1</h1>
-// <h1>Heading 1</h1>
-// <h2>Heading 2</h2>
-// <h2>Heading 2</h2>
-// w.Headings() -> [[Heading 1, heading 1], [Heading 2, Heading 2]]
+// Example:
+//
+// html: `<h1>Heading 1</h1>
+//		  <h1>Heading 1</h1>
+// 		  <h2>Heading 2</h2>
+//		  <h2>Heading 2</h2>`
+// Result: [[Heading 1, heading 1], [Heading 2, Heading 2]]
 func (w *Web) Headings() [][]string {
 	opts := []HeadingLevel{H1, H2, H3, H4, H5, H6}
 	return w.Heading(opts...)

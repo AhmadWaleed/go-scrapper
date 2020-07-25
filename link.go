@@ -1,4 +1,4 @@
-package main
+package goscrapper
 
 import (
 	"github.com/PuerkitoBio/goquery"
@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// get slice of all links on the page as absolute URLs
 func (w *Web) Links() []string {
 	var links []string
 	w.Doc.Find("a").Each(func(i int, a *goquery.Selection) {
@@ -19,6 +20,22 @@ func (w *Web) Links() []string {
 	return links
 }
 
+// get all links on the page with commonly interesting details
+//
+// Example:
+//
+// html: `<a href="https://placekitten.com/432/287" rel="nofollow">external kitten</a>`
+// Result: [
+//     'url' => 'https://placekitten.com/432/287',
+//     'text' => 'external kitten',
+//     'title' => null,
+//     'target' => null,
+//     'rel' => 'nofollow',
+//     'isNofollow' => true,
+//     'isUGC' => false,
+//     'isNoopener' => false,
+//     'isNoreferrer' => false,
+// ]
 func (w *Web) LinksWithDetails() []map[string]interface{} {
 	var links []map[string]interface{}
 	w.Doc.Find("a").Each(func(i int, a *goquery.Selection) {
@@ -65,6 +82,7 @@ func (w *Web) LinksWithDetails() []map[string]interface{} {
 	return links
 }
 
+// get all internal links (same root or sub-domain) on the page as absolute URLs
 func (w *Web) InternalLinks() []string {
 	var links []string
 	for _, link := range w.Links() {
@@ -75,6 +93,7 @@ func (w *Web) InternalLinks() []string {
 	return links
 }
 
+// get all external links on the page as absolute URLs
 func (w *Web) ExternalLinks() []string {
 	var links []string
 	for _, link := range w.Links() {

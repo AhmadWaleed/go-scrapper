@@ -1,4 +1,4 @@
-package main
+package goscrapper
 
 import (
 	"fmt"
@@ -9,8 +9,10 @@ import (
 // Fetch the title from head, if a tag wasn't found because
 // it's missing in the source HTML, empty string will be returned.
 //
-// <title>Lorem Ipsum</title>
-// w.Title() -> Lorem Ipsum
+// Example:
+//
+// html: `<title>Lorem Ipsum</title>`
+// Result: Lorem Ipsum
 func (w *Web) Title() string {
 	return strings.TrimSpace(w.Doc.Find("title").Text())
 }
@@ -18,15 +20,19 @@ func (w *Web) Title() string {
 // Fetch the charset meta info from head, if a tag wasn't found because
 // it's missing in the source HTML, empty string will be returned.
 //
-// <meta charset="utf-8" />
-// w.Title() -> utf-8
+// Example:
+//
+// html: `<meta charset="utf-8" />`
+// Result: utf-8
 func (w *Web) Charset() string {
 	return w.Doc.Find("meta").AttrOr("charset", "")
 }
 
 // Fetch viewport meta info from head
 //
-// <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+// Examples:
+//
+// html: `<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />`
 // w.Viewport().Val -> ['width=device-width', 'initial-scale=1', 'maximum-scale=1', 'user-scalable=no']
 // w.Viewport().String() -> 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no'
 func (w *Web) Viewport() *Viewport {
@@ -34,6 +40,8 @@ func (w *Web) Viewport() *Viewport {
 }
 
 // Fetch content type meta info from head
+//
+// Example:
 //
 // <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
 // w.ContentType() -> [text/html, utf-8]
@@ -59,16 +67,20 @@ func (w *Web) ContentType() string {
 
 // Fetch canonical meta url from head
 //
-// <link rel="canonical" href="https://test-pages.goscrapper.de/page.html" />
-// w.Canonical() -> https://test-pages.goscrapper.de/page.html
+// Example:
+//
+// html: `<link rel="canonical" href="https://test-pages.goscrapper.de/page.html" />`
+// Result: https://test-pages.goscrapper.de/page.html
 func (w *Web) Canonical() string {
 	return w.Doc.Find("link[rel='canonical']").AttrOr("href", "")
 }
 
 // Fetch meta info of csrf token from head
 //
-// <meta name="csrf-token" content="token" />
-// w.CSRFToken() -> token
+// Example:
+//
+// html: `<meta name="csrf-token" content="token" />`
+// Result: token
 func (w *Web) CSRFToken() string {
 	return w.Doc.Find("meta[name='csrf-token']").AttrOr("content", "")
 }
