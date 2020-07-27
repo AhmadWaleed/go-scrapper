@@ -7,9 +7,28 @@ An oppinated & limited way to access the web using GO.
 Here are a few impressions on the way the library works. More examples are on the project go docs.
 
 For complete working example please refer to `_examples` project directory.
-```go
-web := goscrapper.NewScrapper(fmt.Sprintf("http://localhost:%d", *port))
 
+### Initialization
+```go
+// with context
+ctx := context.Background();
+ctx, cancel := context.WithTimeout(ctx, time.Second * 5)
+defer cancel()
+
+web := goscrapper.NewContextScrapper(ctx, "https://www.domain.com")
+if err != nil {
+    log.Fatal(err)
+}
+
+// without context
+web := goscrapper.NewScrapper("https://www.domain.com")
+if err != nil {
+    log.Fatal(err)
+}
+```
+
+### Usage
+```go
 // scrape headers info
 fmt.Println(web.Title())
 fmt.Println(web.CSRFToken())

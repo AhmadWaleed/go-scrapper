@@ -1,11 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"github.com/AhmadWaleed/go-scrapper"
 	"log"
 	"net/http"
+	"time"
 )
 
 var port = flag.Int("port", 8080, "port which you want to start server on.")
@@ -15,7 +17,16 @@ func main() {
 
 	go TestServer(fmt.Sprintf(":%d", *port))
 
-	web := goscrapper.NewScrapper(fmt.Sprintf("http://localhost:%d", *port))
+	ctx := context.Background();
+	ctx, cancel := context.WithTimeout(ctx, time.Second * 5)
+	defer cancel()
+
+	web, err := goscrapper.NewContextScrapper(ctx, fmt.Sprintf("http://localhost:%d", *port))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//web := goscrapper.NewScrapper(fmt.Sprintf("http://localhost:%d", *port)) // without context
 
 	// scrape headers info
 	fmt.Println(web.Title())
