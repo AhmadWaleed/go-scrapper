@@ -1,4 +1,4 @@
-# [GO Scraper]()
+# [GO Scraper](https://godoc.org/github.com/AhmadWaleed/go-scrapper)
 
 An oppinated & limited way to access the web using GO.
 
@@ -59,4 +59,4 @@ for _, q := range quotes {
 }
 ```
 
-See the [full documentation]() for more information and examples.
+See the [full documentation](https://godoc.org/github.com/AhmadWaleed/go-scrapper) for more information and examples.
