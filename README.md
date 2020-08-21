@@ -1,4 +1,4 @@
-# [GO Scraper](https://godoc.org/github.com/AhmadWaleed/go-scrapper)
+# [GO Scraper](https://godoc.org/github.com/AhmadWaleed/go-scrapper) [![PkgGoDev](https://pkg.go.dev/badge/github.com/AhmadWaleed/go-scrapper?tab=doc)](https://pkg.go.dev/github.com/AhmadWaleed/go-scrapper?tab=doc)
 
 An oppinated & limited way to access the web using GO.
 
